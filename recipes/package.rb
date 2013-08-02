@@ -104,6 +104,15 @@ when "debian","ubuntu"
     group node['apache']['group']
   end
 
+  if node["redmine"]["smtp"]["enabled"]
+    template "/etc/redmine/default/configuration.yml" do
+      source "configuration.yml.erb"
+      owner node['apache']['user']
+      group node['apache']['group']
+      mode "640"
+    end
+  end
+
   if node['redmine']['http_server']['www_redirect'] || node['jenkins']['http_proxy']['ssl']['redirect_http']
     include_recipe "apache2::mod_rewrite"
   end
